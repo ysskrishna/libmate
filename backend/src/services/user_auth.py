@@ -10,7 +10,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class UserService:
+class UserAuthService:
     role = enums.RoleType.USER
 
     @staticmethod
@@ -28,8 +28,8 @@ class UserService:
         await db.commit()
         await db.refresh(new_user)
 
-        access_token = create_access_token(new_user.email, UserService.role)
-        return {"access_token": access_token, "name": new_user.name, "role": UserService.role}
+        access_token = create_access_token(new_user.email, UserAuthService.role)
+        return {"access_token": access_token, "name": new_user.name, "role": UserAuthService.role}
 
     @staticmethod
     async def login(user: schemas.LoginSchema, db: AsyncSession):
@@ -41,5 +41,5 @@ class UserService:
             logger.error("Invalid credentials for email: %s", user.email)
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
 
-        access_token = create_access_token(db_user.email, UserService.role)
-        return {"access_token": access_token, "name": db_user.name, "role": UserService.role}
+        access_token = create_access_token(db_user.email, UserAuthService.role)
+        return {"access_token": access_token, "name": db_user.name, "role": UserAuthService.role}

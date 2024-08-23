@@ -3,8 +3,8 @@ from src.core.logging_config import setup_logging
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 
-from src.routers.user import router as user_router
-from src.routers.admin import router as admin_router
+from src.routers.user_auth import router as user_auth_router
+from src.routers.admin_auth import router as admin_auth_router
 
 app = FastAPI()
 origins = ["*"]
@@ -20,8 +20,8 @@ app.add_middleware(
 )
  
 
-app.include_router(user_router, prefix="/api/user", tags=["user authentication"])
-app.include_router(admin_router, prefix="/api/admin", tags=["admin authentication"])
+app.include_router(user_auth_router, prefix="/api/user/auth", tags=["user authentication"])
+app.include_router(admin_auth_router, prefix="/api/admin/auth", tags=["admin authentication"])
 
 
 @app.get("/", response_class=HTMLResponse)

@@ -10,7 +10,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class AdminService:
+class AdminAuthService:
     role = enums.RoleType.ADMIN
 
     @staticmethod
@@ -28,8 +28,8 @@ class AdminService:
         await db.commit()
         await db.refresh(new_admin)
 
-        access_token = create_access_token(new_admin.email, AdminService.role)
-        return {"access_token": access_token, "name": new_admin.name, "role": AdminService.role}
+        access_token = create_access_token(new_admin.email, AdminAuthService.role)
+        return {"access_token": access_token, "name": new_admin.name, "role": AdminAuthService.role}
 
     @staticmethod
     async def login(admin: schemas.LoginSchema, db: AsyncSession):
@@ -41,5 +41,5 @@ class AdminService:
             logger.error("Invalid credentials for email: %s", admin.email)
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
 
-        access_token = create_access_token(db_admin.email, AdminService.role)
-        return {"access_token": access_token, "name": db_admin.name, "role": AdminService.role}
+        access_token = create_access_token(db_admin.email, AdminAuthService.role)
+        return {"access_token": access_token, "name": db_admin.name, "role": AdminAuthService.role}
