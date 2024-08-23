@@ -38,8 +38,8 @@ class UpdateBookRequestSchema(BaseModel):
     description: Optional[str] = None
     genre: Optional[enums.BookGenre] = None
     publish_date: Optional[date] = None
-    number_of_copies: Optional[int] = None
-    available_number_of_copies: Optional[int] = None
+    total_copies: Optional[int] = None
+    available_copies: Optional[int] = None
 
 class BookResponseSchema(BookBase):
     book_id: int
