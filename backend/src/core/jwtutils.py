@@ -68,10 +68,11 @@ async def get_current_user(token: str = Depends(oauth2_scheme), db: AsyncSession
     
     return token_data
 
-async def role_required(roles: list, current_user: dict = Depends(get_current_user)):
-    if current_user["role"] not in roles:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail=f"Access requires one of the following roles: {', '.join(roles)}",
-        )
-    return current_user
+class RoleChecker:  
+  def __init__(self, allowed_roles):  
+    self.allowed_roles = allowed_roles  
+  
+  def __call__(self, user = Depends(get_current_user)):
+    if user.get('role') in self.allowed_roles:  
+      return True  
+    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="You don't have enough permissions")
