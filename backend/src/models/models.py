@@ -1,15 +1,14 @@
 from sqlalchemy import  Column, Integer, String, ForeignKey, Date, DateTime
+from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
-from datetime import datetime
 from sqlalchemy.orm import declarative_mixin
-
 
 from src.core.dbutils import Base
 
 @declarative_mixin
 class Timestamp:
-    created_at = Column(DateTime, default=datetime.now, nullable=False)
-    updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now, nullable=False)
+    created_at = Column(DateTime, default=func.now(), server_default=func.now(), nullable=False)
+    updated_at = Column(DateTime, default=func.now(), server_default=func.now(), onupdate=func.now(), nullable=False)
 
 
 class User(Timestamp, Base):
@@ -49,6 +48,10 @@ class Transaction(Timestamp, Base):
     transaction_id = Column(Integer, primary_key=True, index=True)
     book_id = Column(Integer, ForeignKey("books.book_id"), nullable=False)
     user_id = Column(Integer, ForeignKey("users.user_id"), nullable=False)
-    transaction_type = Column(String, nullable=False, index=True)
+    status = Column(String, nullable=False, index=True)
     collected_date = Column(Date, nullable=False)
     due_date = Column(Date, nullable=False)
+    return_date = Column(Date, nullable=True)
+
+    user = relationship(User)
+    book = relationship(Book)

@@ -46,3 +46,27 @@ class BookResponseSchema(BookBase):
 
     class Config:
         orm_mode = True
+
+
+class CheckoutRequestSchema(BaseModel):
+    book_id: int
+    user_id: int
+    collected_date: date
+    due_date: date
+
+class ReturnRequestSchema(BaseModel):
+    transaction_id: int
+    return_date: date
+
+class BookTransactionResponseSchema(BaseModel):
+    transaction_id: int
+    book_id: int
+    user_id: int
+    collected_date: date
+    due_date: date
+    return_date: Optional[date]
+    status: enums.BookTransactionStatus
+
+    class Config:
+        orm_mode = True
+        from_attributes=True

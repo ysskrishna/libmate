@@ -66,6 +66,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme), db: AsyncSession
     if user is None:
         raise credentials_exception
     
+    token_data['id'] = user.admin_id if role == RoleType.ADMIN else user.user_id
     return token_data
 
 class RoleChecker:  
@@ -74,5 +75,5 @@ class RoleChecker:
   
   def __call__(self, user = Depends(get_current_user)):
     if user.get('role') in self.allowed_roles:  
-      return True  
+      return user  
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="You don't have enough permissions")
