@@ -1,6 +1,6 @@
 # Library Management System
 
-A comprehensive system for managing library operations and user interactions.
+A full stack application for a library book vending application. It is designed to manage book inventories, and member management, ensuring a seamless experience for borrowing and returning books through automated vending machines.
 
 
 ## Features
