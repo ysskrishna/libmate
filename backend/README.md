@@ -1,48 +1,78 @@
-# Backend
+# Library Management System Backend
 
-## initial setup
-```
-virtualenv venv
-.\venv\Scripts\activate
-pip install -r requirements.txt
-```
+This is the backend service for the Library Management System, built with FastAPI and SQLAlchemy.
 
-## How to run development
+## Prerequisites
+
+- Python 3.8+
+- pip
+- virtualenv
+
+## Initial Setup
+
+1. Create a virtual environment:
+   ```
+   virtualenv venv
+   ```
+
+2. Activate the virtual environment:
+   - On Windows:
+     ```
+     .\venv\Scripts\activate
+     ```
+   - On macOS and Linux:
+     ```
+     source venv/bin/activate
+     ```
+
+3. Install dependencies:
+   ```
+   pip install -r requirements.txt
+   ```
+
+## Development
+
+### Running the Development Server
+
+Start the FastAPI server:
 ```
 python main.py
 ```
 
-## update requirements
+The server will be available at `http://localhost:8081/`
+
+### API Documentation
+
+Access the Swagger UI documentation at `http://localhost:8081/docs`
+
+### Updating Dependencies
+
+After adding or removing packages, update the requirements file:
 ```
 pip freeze > requirements.txt
 ```
 
-### Access development server
+## Database Management
+
+We use Alembic for database migrations.
+
+### Models Version History
+
+Import your models in `alembic/env.py` for them to be tracked and to generate version history.
+
+### Alembic Commands
+
+Create an automatic migration:
 ```
-http://localhost:8081/
+alembic revision --autogenerate -m "description of changes"
 ```
 
-### Access swagger documentation
+Create a manual migration:
 ```
-http://localhost:8081/docs
-```
-
-### Models version history
-Import models in alembic/env.py for them to be tracked and generate version history
-
-
-### Alembic commands
-Create automatic migration
-```
-alembic revision --autogenerate -m "initial migrations"
+alembic revision -m "description of manual changes"
 ```
 
-Create manual migration
-```
-alembic revision -m "insert entries"
-```
-
-### Alembic upgrade
+Apply migrations:
 ```
 alembic upgrade head
 ```
