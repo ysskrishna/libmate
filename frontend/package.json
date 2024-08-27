@@ -1,0 +1,30 @@
+{
+  "name": "library-management-app",
+  "version": "0.1.0",
+  "author": "ysskrishna",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@reduxjs/toolkit": "^2.2.7",
+    "ag-grid-community": "^32.1.0",
+    "ag-grid-react": "^32.1.0",
+    "axios": "^1.7.5",
+    "formik": "^2.4.6",
+    "next": "14.2.6",
+    "next-redux-wrapper": "^8.1.0",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-icons": "^5.3.0",
+    "react-redux": "^9.1.2",
+    "yup": "^1.4.0"
+  },
+  "devDependencies": {
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1"
+  }
+}
