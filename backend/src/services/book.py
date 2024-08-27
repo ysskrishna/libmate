@@ -12,14 +12,10 @@ class BookService:
 
     @staticmethod
     async def get_books(db: AsyncSession):
-        async def inner_logic():
-            query = select(Book)
-            result = await db.execute(query)
-            books = result.scalars().all()
-            return books
-
-        return await db_transaction_handler(db, inner_logic, error_return=[])
-
+        query = select(Book)
+        result = await db.execute(query)
+        books = result.scalars().all()
+        return books
 
     @staticmethod
     async def create(book_data: schemas.BookBase, db: AsyncSession):
@@ -35,8 +31,7 @@ class BookService:
     @staticmethod
     async def update(book_id: int, book_data: schemas.UpdateBookRequestSchema, db: AsyncSession):
         async def inner_logic():
-            result = await db.execute(select(Book).filter(Book.book_id == book_id))
-            book = result.scalar_one_or_none()
+            book = await db.get(Book, book_id)
             if not book:
                 return None
             for key, value in book_data.dict(exclude_unset=True).items():
@@ -50,8 +45,7 @@ class BookService:
     @staticmethod
     async def delete(book_id: int, db: AsyncSession):
         async def inner_logic():
-            result = await db.execute(select(Book).filter(Book.book_id == book_id))
-            book = result.scalar_one_or_none()
+            book = await db.get(Book, book_id)
             if not book:
                 return None
             await db.delete(book)

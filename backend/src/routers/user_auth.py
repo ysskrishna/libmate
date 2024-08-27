@@ -12,12 +12,10 @@ logger = logging.getLogger(__name__)
 async def login_user(user: schemas.LoginSchema, db: AsyncSession = Depends(get_db)):
     logger.info(f"User login attempt for email: {user.email}")
     result = await UserAuthService.login(user, db)
-    logger.info(f"User login successful for email: {user.email}")
     return result
 
 @router.post("/register", response_model=schemas.TokenResponseSchema)
 async def register_user(user: schemas.RegisterSchema, db: AsyncSession = Depends(get_db)):
     logger.info(f"User register attempt for email: {user.email}")
     result = await UserAuthService.register(user, db)
-    logger.info(f"User register successful for email: {user.email}")
     return result

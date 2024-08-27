@@ -36,16 +36,14 @@ class UserAuthService:
     
     @staticmethod
     async def login(user: schemas.LoginSchema, db: AsyncSession):
-        async def inner_logic():
-            query = select(User).filter(User.email == user.email)
-            result = await db.execute(query)
-            db_user = result.scalar_one_or_none()
+        query = select(User).filter(User.email == user.email)
+        result = await db.execute(query)
+        db_user = result.scalar_one_or_none()
 
-            if not db_user or not verify_password(user.password, db_user.password):
-                logger.error("Invalid credentials for email: %s", user.email)
-                raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
+        if not db_user or not verify_password(user.password, db_user.password):
+            logger.error("Invalid credentials for email: %s", user.email)
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
 
-            access_token = create_access_token(db_user.email, UserAuthService.role)
-            return {"access_token": access_token, "name": db_user.name, "role": UserAuthService.role}
-        
-        return await db_transaction_handler(db, inner_logic)
+        logger.info(f"User login successful for email: {user.email}")
+        access_token = create_access_token(db_user.email, UserAuthService.role)
+        return {"access_token": access_token, "name": db_user.name, "role": UserAuthService.role}

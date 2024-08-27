@@ -28,7 +28,7 @@ http://localhost:8081/docs
 ```
 
 ### Models version history
-Import models in env.py for them to be tracked and generate version history
+Import models in alembic/env.py for them to be tracked and generate version history
 
 
 ### Alembic commands

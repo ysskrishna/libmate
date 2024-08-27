@@ -2,7 +2,7 @@ from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from src.core.config import Config
-from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from fastapi import HTTPException, status
 import logging
 
@@ -20,10 +20,14 @@ async def get_db():
 
 logger = logging.getLogger(__name__)
 
-async def db_transaction_handler(db: AsyncSession, func, error_return=None):
+async def db_transaction_handler(db: AsyncSession, func):
     try:
         return await func()
+    except IntegrityError as e:
+        logger.error(f"Integrity error: {e}")
+        await db.rollback()
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Integrity constraint violated.")
     except SQLAlchemyError as e:
         logger.error(f"Database error: {e}")
         await db.rollback()
-        return error_return
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Database error: {e}")

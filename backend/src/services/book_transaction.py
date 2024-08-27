@@ -38,7 +38,7 @@ class BookTransactionService:
             await db.commit()
             return created_transactions
         
-        return await db_transaction_handler(db, inner_logic, error_return=[])
+        return await db_transaction_handler(db, inner_logic)
     
     @staticmethod
     async def return_books(transactions: list[schemas.ReturnRequestSchema], db: AsyncSession):
@@ -69,4 +69,4 @@ class BookTransactionService:
             await db.commit()
             return updated_transactions
         
-        return await db_transaction_handler(db, inner_logic, error_return=[])
+        return await db_transaction_handler(db, inner_logic)

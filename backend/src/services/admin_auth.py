@@ -36,16 +36,14 @@ class AdminAuthService:
 
     @staticmethod
     async def login(admin: schemas.LoginSchema, db: AsyncSession):
-        async def inner_logic():
-            query = select(Admin).filter(Admin.email == admin.email)
-            result = await db.execute(query)
-            db_admin = result.scalar_one_or_none()
+        query = select(Admin).filter(Admin.email == admin.email)
+        result = await db.execute(query)
+        db_admin = result.scalar_one_or_none()
 
-            if not db_admin or not verify_password(admin.password, db_admin.password):
-                logger.error("Invalid credentials for email: %s", admin.email)
-                raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
+        if not db_admin or not verify_password(admin.password, db_admin.password):
+            logger.error("Invalid credentials for email: %s", admin.email)
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
 
-            access_token = create_access_token(db_admin.email, AdminAuthService.role)
-            return {"access_token": access_token, "name": db_admin.name, "role": AdminAuthService.role}
-
-        return await db_transaction_handler(db, inner_logic)
+        logger.info(f"Admin login successful for email: {admin.email}")
+        access_token = create_access_token(db_admin.email, AdminAuthService.role)
+        return {"access_token": access_token, "name": db_admin.name, "role": AdminAuthService.role}
