@@ -45,3 +45,9 @@ A full stack application for a library book vending application. It is designed 
 ### User Access
 - Email: john@gmail.com
 - Password: demo
+
+# License
+
+Copyright (c) 2024 [Y. Siva Sai Krishna]
+
+All rights reserved. This software and associated documentation files (the "Software") are the proprietary property of [Y. Siva Sai Krishna]. No part of the Software may be used, copied, modified, distributed, or transmitted in any form or by any means without the prior written permission of [Y. Siva Sai Krishna].
