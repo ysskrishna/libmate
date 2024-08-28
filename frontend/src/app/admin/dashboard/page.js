@@ -2,7 +2,7 @@
 
 import ProtectedRoute from '@/components/ProtectedRoute';
 import Sidebar from '@/components/Sidebar';
-import BookTable from '@/components/BookTable';
+import BookTable from '@/components/BookTable/admin';
 import { ROLE } from '@/common/constants';
 
 const Dashboard = () => {
