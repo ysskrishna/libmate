@@ -4,6 +4,10 @@ import { useRouter } from 'next/navigation';
 import { useFormik } from 'formik';
 import axios from 'axios';
 import * as Yup from 'yup';
+import Button from '@/components/Button';
+import InputField from '@/components/InputField';
+import Dropdown from '@/components/Dropdown';
+import { ROLE } from '@/common/constants';
 
 export default function Login() {
   const router = useRouter();
@@ -12,21 +16,21 @@ export default function Login() {
     initialValues: {
       email: '',
       password: '',
-      role: 'User',
+      role: ROLE.USER,
     },
     validationSchema: Yup.object({
       email: Yup.string().email('Invalid email format').required('Email is required'),
       password: Yup.string().required('Password is required'),
-      role: Yup.string().oneOf(['User', 'Admin'], 'Invalid Role').required('Role is required'),
+      role: Yup.string().oneOf([ROLE.USER, ROLE.ADMIN], 'Invalid Role').required('Role is required'),
     }),
     onSubmit: async (values, { setSubmitting }) => {
       try {
         const res = await axios.post('/api/auth/login', values);
 
         if (res.status === 200) {
-          if (values.role === 'User') {
+          if (values.role === ROLE.USER) {
             router.push('/customerDashboard'); // Redirect to customer dashboard
-          } else if (values.role === 'Admin') {
+          } else if (values.role === ROLE.ADMIN) {
             router.push('/admin-dashboard'); // Redirect to admin dashboard
           }
         }
@@ -39,61 +43,55 @@ export default function Login() {
   });
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50">
-      <form onSubmit={formik.handleSubmit} className="bg-white p-8 rounded-lg shadow-md max-w-sm w-full">
+    <div className="flex items-center justify-center min-h-screen">
+      <form className="bg-white p-8 rounded-lg shadow-md max-w-sm w-full">
         <div className="mb-4">
-          <input
+          <InputField
+            label="Email"
             type="email"
             name="email"
             value={formik.values.email}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            placeholder="Email"
-            className={`w-full p-3 border rounded text-gray-600 ${formik.touched.email && formik.errors.email ? 'border-red-500' : 'border-gray-300'}`}
+            placeholder="abc@gmail.com"
+            errorMessage={formik.touched.email && formik.errors.email ? formik.errors.email : null}
           />
-          {formik.touched.email && formik.errors.email ? (
-            <div className="text-red-500 text-sm mt-1">{formik.errors.email}</div>
-          ) : null}
         </div>
 
         <div className="mb-4">
-          <input
+          <InputField
+            label="Password"
             type="password"
             name="password"
             value={formik.values.password}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            placeholder="Password"
-            className={`w-full p-3 border rounded text-gray-600 ${formik.touched.password && formik.errors.password ? 'border-red-500' : 'border-gray-300'}`}
+            placeholder="•••••••••"
+            errorMessage={formik.touched.password && formik.errors.password ? formik.errors.password : null}
           />
-          {formik.touched.password && formik.errors.password ? (
-            <div className="text-red-500 text-sm mt-1">{formik.errors.password}</div>
-          ) : null}
+            
         </div>
-
+        
         <div className="mb-4">
-          <select
+          <Dropdown
+            label="Role"
             name="role"
+            errorMessage={formik.touched.role && formik.errors.role ? formik.errors.role : null}
             value={formik.values.role}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            className={`w-full p-3 border rounded text-gray-600 ${formik.touched.role && formik.errors.role ? 'border-red-500' : 'border-gray-300'}`}
           >
-            <option value="User">User</option>
-            <option value="Admin">Admin</option>
-          </select>
-          {formik.touched.role && formik.errors.role ? (
-            <div className="text-red-500 text-sm mt-1">{formik.errors.role}</div>
-          ) : null}
+            <option value={ROLE.USER}>User</option>
+            <option value={ROLE.ADMIN}>Admin</option>
+          </Dropdown>
         </div>
 
-        <button
-          type="submit"
+        <Button
+          onClick={formik.handleSubmit}
           disabled={formik.isSubmitting}
-          className="w-full bg-purple-500 text-white p-3 rounded hover:bg-purple-600 transition duration-200"
         >
           {formik.isSubmitting ? 'Logging in...' : 'Login'}
-        </button>
+        </Button>
 
         <div className="mt-4 text-center">
           <a href="/signup" className="text-gray-500 hover:underline">

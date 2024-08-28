@@ -1,12 +1,12 @@
-import { useState, useEffect } from 'react';
-import AddToCartForm from '../../components/Cart/AddToCartForm';
+import { useState, useEffect, useMemo } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
+import { FaEdit, FaTrash } from 'react-icons/fa';
 
 export default function BookTable() {
-  const [selectedBook, setSelectedBook] = useState(null);
-  const [gridWidth, setGridWidth] = useState('100%');
+  
+  const [gridApi, setGridApi] = useState(null);
 
   const books = [
     {
@@ -308,12 +308,18 @@ export default function BookTable() {
       "total_copies": 120,
       "available_copies": 110,
       "book_id": 30
+  }];
+
+  const handleEdit = (book) => {
+    console.log("handleEdit", book);
   }
 
-  ];
+  const handleDelete = (book) => {
+    console.log("handleDelete", book);
+  }
 
   const columnDefs = [
-    { headerName: "Title", field: "title", sortable: true, filter: true },
+    { headerName: "Title", field: "title", sortable: true, filter: true, minWidth: 200 },
     { headerName: "Author", field: "author", sortable: true, filter: true },
     { headerName: "Description", field: "description", sortable: true, filter: true },
     { headerName: "Genre", field: "genre", sortable: true, filter: true },
@@ -322,20 +328,29 @@ export default function BookTable() {
       headerName: "Actions",
       field: "actions",
       cellRenderer: (params) => (
-        <button
-          className="bg-gray-200 rounded px-4 py-1"
-          onClick={() => setSelectedBook(params.data)}
-        >
-          Add to cart
-        </button>
+        <div>
+            <button
+                type="button"
+                className="bg-gray-200 rounded px-2 py-2 text-xs font-medium text-center hover:bg-gray-300 mr-2"
+                onClick={() => handleEdit(params.data)}
+            ><FaEdit />
+            </button>
+            <button
+                type="button"
+                className="bg-gray-200 rounded px-2 py-2 text-xs font-medium text-center hover:bg-gray-300"
+                onClick={() => handleDelete(params.data)}
+            ><FaTrash />
+            </button>
+        </div>
       ),
     },
   ];
 
   useEffect(() => {
     const handleResize = () => {
-      const width = window.innerWidth;
-      setGridWidth(width < 768 ? '100%' : '80%');
+      if (gridApi) {
+        gridApi.sizeColumnsToFit();
+      }
     };
 
     window.addEventListener('resize', handleResize);
@@ -346,22 +361,25 @@ export default function BookTable() {
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, []);
+  }, [gridApi]);
+
+  const onGridReady = (params) => {
+    setGridApi(params.api);
+    params.api.sizeColumnsToFit();
+  };
 
   return (
-    <div className="flex justify-center">
-    <div className="ag-theme-alpine" style={{ height: 600, width: gridWidth }}>
-      <AgGridReact
-        rowData={books}
-        columnDefs={columnDefs}
-        pagination={true}
-        paginationPageSize={10}
-        domLayout="autoHeight"
-      />
+    <div className="flex flex-col md:flex-row justify-center">
+      <div className="ag-theme-alpine w-full">
+        <AgGridReact
+          rowData={books}
+          columnDefs={columnDefs}
+          pagination={true}
+          paginationPageSize={10}
+          onGridReady={onGridReady}
+          domLayout="autoHeight"
+        />
+      </div>
     </div>
-    {selectedBook && (
-      <AddToCartForm book={selectedBook} onClose={() => setSelectedBook(null)} />
-    )}
-  </div>
   );
 }

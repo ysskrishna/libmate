@@ -1,11 +1,18 @@
 "use client";
 
 import ProtectedRoute from '@/components/ProtectedRoute';
+import Sidebar from '@/components/Sidebar';
+import { ROLE } from '@/common/constants';
 
 const BookNew = () => {
   return (
-    <ProtectedRoute allowedRoles={['admin']}>
-      <h1>Admin Book New</h1>
+    <ProtectedRoute allowedRoles={[ROLE.ADMIN]}>
+      <div className="flex h-screen">
+        <Sidebar />
+        <div className='flex-1 p-3 mb-3 overflow-y-auto'>
+          <div>Book New</div>
+        </div>
+      </div>
     </ProtectedRoute>
   );
 };
