@@ -1,12 +1,12 @@
-import { useState, useEffect } from 'react';
-import AddToCartForm from '../../components/Cart/AddToCartForm';
+import { useState, useEffect, useMemo } from 'react';
+import AddToCartForm from '../Cart/AddToCartForm';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 
 export default function BookTable() {
   const [selectedBook, setSelectedBook] = useState(null);
-  const [gridWidth, setGridWidth] = useState('100%');
+  const [gridApi, setGridApi] = useState(null);
 
   const books = [
     {
@@ -313,7 +313,7 @@ export default function BookTable() {
   ];
 
   const columnDefs = [
-    { headerName: "Title", field: "title", sortable: true, filter: true },
+    { headerName: "Title", field: "title", sortable: true, filter: true, minWidth: 200 },
     { headerName: "Author", field: "author", sortable: true, filter: true },
     { headerName: "Description", field: "description", sortable: true, filter: true },
     { headerName: "Genre", field: "genre", sortable: true, filter: true },
@@ -322,20 +322,23 @@ export default function BookTable() {
       headerName: "Actions",
       field: "actions",
       cellRenderer: (params) => (
-        <button
-          className="bg-gray-200 rounded px-4 py-1"
-          onClick={() => setSelectedBook(params.data)}
-        >
-          Add to cart
-        </button>
+        <div>
+            <button
+                type="button"
+                className="bg-gray-200 rounded px-3 py-1 text-xs font-medium text-center"
+                onClick={() => setSelectedBook(params.data)}
+            >Add to cart
+            </button>
+        </div>
       ),
     },
   ];
 
   useEffect(() => {
     const handleResize = () => {
-      const width = window.innerWidth;
-      setGridWidth(width < 768 ? '100%' : '80%');
+      if (gridApi) {
+        gridApi.sizeColumnsToFit();
+      }
     };
 
     window.addEventListener('resize', handleResize);
@@ -346,22 +349,30 @@ export default function BookTable() {
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, []);
+  }, [gridApi]);
+
+  const onGridReady = (params) => {
+    setGridApi(params.api);
+    params.api.sizeColumnsToFit();
+  };
 
   return (
-    <div className="flex justify-center">
-    <div className="ag-theme-alpine" style={{ height: 600, width: gridWidth }}>
-      <AgGridReact
-        rowData={books}
-        columnDefs={columnDefs}
-        pagination={true}
-        paginationPageSize={10}
-        domLayout="autoHeight"
-      />
+    <div className="flex flex-col md:flex-row justify-center">
+      <div className="ag-theme-alpine w-full">
+        <AgGridReact
+          rowData={books}
+          columnDefs={columnDefs}
+          pagination={true}
+          paginationPageSize={10}
+          onGridReady={onGridReady}
+          domLayout="autoHeight"
+        />
+      </div>
+      {selectedBook && (
+        <div className="w-full md:w-1/4 mt-4 md:mt-0 md:ml-4">
+          <AddToCartForm book={selectedBook} onClose={() => setSelectedBook(null)} />
+        </div>
+      )}
     </div>
-    {selectedBook && (
-      <AddToCartForm book={selectedBook} onClose={() => setSelectedBook(null)} />
-    )}
-  </div>
   );
 }

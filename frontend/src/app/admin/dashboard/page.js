@@ -1,16 +1,16 @@
 "use client";
 
 import ProtectedRoute from '@/components/ProtectedRoute';
-import Sidebar from '@/components/Sidebar/Sidebar';
-import BookTable from '@/components/BookTable/BookTable';
+import Sidebar from '@/components/Sidebar';
+import BookTable from '@/components/BookTable';
+import { ROLE } from '@/common/constants';
 
 const Dashboard = () => {
   return (
-    <ProtectedRoute allowedRoles={['admin']}>
-      <div className="flex items-center justify-center min-h-screen">
+    <ProtectedRoute allowedRoles={[ROLE.ADMIN]}>
+      <div className="flex h-screen">
         <Sidebar />
-        <div className="flex-1 p-6">
-          <h1 className="text-xl mb-4">Search</h1>
+        <div className='flex-1 p-3 mb-3 overflow-y-auto'>
           <BookTable />
         </div>
       </div>

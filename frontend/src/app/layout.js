@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ["latin"] });
 const siteConfig = {
   name: "Libmate",
   description: "An Advanced Library Management Application",
-  ogImage: "http://localhost:3000//og-image.png",
+  ogImage: "http://localhost:3000/og-image.png",
   url: "http://localhost:3000/",
 }
 
