@@ -30,6 +30,25 @@ export const createNewBook = (data, onSuccess) => async (dispatch) => {
     
     toastSuccess('Book created successfully');
     onSuccess();
+    dispatch(getAllBooks());
+  } catch (error) {
+    await dispatch(setIsLoading({isLoading:false}));
+    console.error('UnknownError:', error);
+    toastError(error?.message);
+  }
+};
+
+export const updateBook = (bookId, data, onSuccess) => async (dispatch) => {
+  try {
+    await dispatch(setIsLoading({isLoading:true}));
+    let url = `${config?.baseUrl}/api/book/${bookId}`;
+    const method = 'PUT';
+    const response = await handleFetch(url, method, data);
+    console.log("Update Book response", response);
+    
+    toastSuccess('Book updated successfully');
+    onSuccess();
+    dispatch(getAllBooks());
   } catch (error) {
     await dispatch(setIsLoading({isLoading:false}));
     console.error('UnknownError:', error);
@@ -46,6 +65,7 @@ export const deleteBook = (bookId) => async (dispatch) => {
     console.log("Delete Book response", response);
     
     toastSuccess('Book deleted successfully');
+    dispatch(getAllBooks());
   } catch (error) {
     await dispatch(setIsLoading({isLoading:false}));
     console.error('UnknownError:', error);
