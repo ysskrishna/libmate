@@ -1,10 +1,9 @@
 import config from "@/common/config";
 import { ROLE } from "@/common/constants";
 import { toastSuccess, toastError } from "@/common/toast";
-import { setIsLoading, setCredentials } from "@/redux/features/authSlice";
+import { setIsLoading, setCredentials, unsetCredentials } from "@/redux/features/authSlice";
 import { handleFetch } from "@/common/api";
 import { navigate } from "@/common/navigation";
-
 
 
 export const login = (role, data) => async (dispatch) => {
@@ -74,3 +73,8 @@ export const register = (role, data) => async (dispatch) => {
       toastError('Something went wrong. Please try again');
     }
 };
+
+export const logout = () => async (dispatch) => {
+    dispatch(unsetCredentials());
+    navigate('/login');
+}

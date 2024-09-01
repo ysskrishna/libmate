@@ -22,7 +22,7 @@ const authSlice = createSlice({
     setIsLoading: (state, action) => {
       state.isLoading = action.payload.isLoading
     },
-    logout: (state) => {
+    unsetCredentials: (state) => {
       state.role = null;
       state.isAuthenticated = false;
       state.accessToken = null;
@@ -32,7 +32,7 @@ const authSlice = createSlice({
   },
 });
 
-export const { setCredentials, setIsLoading, logout } = authSlice.actions;
+export const { setCredentials, setIsLoading, unsetCredentials } = authSlice.actions;
 
 // selectors
 export const selectIsAuthenticated = (state) => state.auth.isAuthenticated;
