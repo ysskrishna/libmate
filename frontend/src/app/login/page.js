@@ -1,16 +1,21 @@
 "use client";
 
-import { useRouter } from 'next/navigation';
 import { useFormik } from 'formik';
-import axios from 'axios';
 import * as Yup from 'yup';
+import Link from 'next/link';
+import { useDispatch, useSelector } from 'react-redux';
 import Button from '@/components/Button';
 import InputField from '@/components/InputField';
 import Dropdown from '@/components/Dropdown';
 import { ROLE } from '@/common/constants';
+import Logo from '@/components/Logo';
+import { selectIsLoading } from '@/redux/features/authSlice';
+import { login } from '@/redux/api/authApi';
+
 
 export default function Login() {
-  const router = useRouter();
+  const dispatch = useDispatch();
+  const isLoading = useSelector(selectIsLoading);
 
   const formik = useFormik({
     initialValues: {
@@ -23,28 +28,22 @@ export default function Login() {
       password: Yup.string().required('Password is required'),
       role: Yup.string().oneOf([ROLE.USER, ROLE.ADMIN], 'Invalid Role').required('Role is required'),
     }),
-    onSubmit: async (values, { setSubmitting }) => {
-      try {
-        const res = await axios.post('/api/auth/login', values);
-
-        if (res.status === 200) {
-          if (values.role === ROLE.USER) {
-            router.push('/customerDashboard'); // Redirect to customer dashboard
-          } else if (values.role === ROLE.ADMIN) {
-            router.push('/admin-dashboard'); // Redirect to admin dashboard
-          }
-        }
-      } catch (error) {
-        console.error('Login failed', error);
-      } finally {
-        setSubmitting(false);
-      }
+    onSubmit: (values) => {
+      dispatch(login(values.role, {
+        "email": values.email, 
+        "password": values.password
+      }));
     },
   });
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
+    <div className="flex items-center justify-center min-h-screen flex-col">
+      
       <form className="bg-white p-8 rounded-lg shadow-md max-w-sm w-full">
+        <div className='mb-4 flex justify-center'>
+          <Logo />
+        </div>
+        
         <div className="mb-4">
           <InputField
             label="Email"
@@ -88,15 +87,15 @@ export default function Login() {
 
         <Button
           onClick={formik.handleSubmit}
-          disabled={formik.isSubmitting}
+          disabled={isLoading}
         >
-          {formik.isSubmitting ? 'Logging in...' : 'Login'}
+          {isLoading ? 'Logging in...' : 'Login'}
         </Button>
 
         <div className="mt-4 text-center">
-          <a href="/signup" className="text-gray-500 hover:underline">
+          <Link href="/register" className="text-gray-500 hover:underline">
             Create a new account?
-          </a>
+          </Link>
         </div>
       </form>
     </div>

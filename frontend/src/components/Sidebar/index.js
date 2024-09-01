@@ -1,25 +1,33 @@
-import { useState } from 'react';
+"use client";
+
+import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
 import { FaHome, FaSearch, FaShoppingCart, FaPlus } from 'react-icons/fa';
-import { useSelector } from 'react-redux';
-import { selectRole, selectUser, logout } from '@/redux/features/authSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '@/redux/api/authApi';
+import { selectRole, selectUser } from '@/redux/features/authSlice';
 import { ROLE } from '@/common/constants';
 import Button from '@/components/Button';
-import { useDispatch } from 'react-redux';
+import Logo from '@/components/Logo';
 
-const SidebarLink = ({ href, children }) => (
-  <Link href={href} className="mb-2 p-2 flex items-center rounded hover:bg-gray-300">
+
+const SidebarLink = ({ href, children, isSelected, onClick }) => (
+  <Link href={href} className={`mb-2 p-2 flex items-center rounded hover:bg-gray-300 ${isSelected ? 'bg-gray-300' : ''}`} onClick={onClick}>
     {children}
   </Link>
 );
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedLink, setSelectedLink] = useState('');
+  const [selectedLinkChildren, setSelectedLinkChildren] = useState(null);
 
   let role = useSelector(selectRole);
   let user = useSelector(selectUser);
   const dispatch = useDispatch();
+  const pathname = usePathname();
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -33,31 +41,47 @@ export default function Sidebar() {
     dispatch(logout());
   };
 
-  const renderLinks = () => {
-    if (role === ROLE.ADMIN) {
-      return (
-        <>
-          <SidebarLink href="/admin/dashboard" >
-            <FaHome className="mr-2" /> Home
-          </SidebarLink>
-          <SidebarLink href="/admin/booknew" >
-            <FaPlus className="mr-2" /> New
-          </SidebarLink>
-        </>
-      )
-    } else if (role === ROLE.USER) {
-      return (
-        <>
-          <SidebarLink href="/user/dashboard" >
-            <FaHome className="mr-2" /> Home
-          </SidebarLink>
-          <SidebarLink href="/user/cart" >
-            <FaShoppingCart className="mr-2" /> Cart
-          </SidebarLink>
-        </>
-      )
+  const handleLinkClick = (link, children) => {
+    setSelectedLink(link);
+    setSelectedLinkChildren(children);
+    closeSidebar();
+  };
+
+
+  const links = {
+    [ROLE.ADMIN]: [
+      { href: "/admin/dashboard", content: <><FaHome className="mr-2" /> Home</>},
+      { href: "/admin/booknew", content: <><FaPlus className="mr-2" /> Book New</>}
+    ],
+    [ROLE.USER]: [
+      { href: "/user/dashboard", content: <><FaHome className="mr-2" /> Home</>},
+      { href: "/user/search", content: <><FaSearch className="mr-2" /> Search</>},
+      { href: "/user/cart", content: <><FaShoppingCart className="mr-2" /> Cart</>}
+    ]
+  };
+
+  useEffect(() => {
+    
+    const currentLink = links[role]?.find(link => link.href === pathname);
+    
+    if (currentLink) {
+      setSelectedLink(currentLink.href);
+      setSelectedLinkChildren(currentLink.content);
     }
-  }
+  }, []);
+
+  const renderLinks = () => {
+    return links[role]?.map(link => (
+      <SidebarLink
+        key={link.href}
+        href={link.href}
+        isSelected={selectedLink === link.href}
+        onClick={() => handleLinkClick(link.href, link.content)}
+      >
+        {link.content}
+      </SidebarLink>
+    ));
+  };
 
   return (
     <div>
@@ -75,10 +99,7 @@ export default function Sidebar() {
       >
         <div className='flex flex-col'>
           <div className='flex flex-row justify-between mb-4 lg:mb-6'>
-            <div className='flex flex-row items-center'>
-              <img src="/libmate_icon.png" alt="Libmate" className="w-8 h-8 mr-2" />
-              <h2 className="text-xl font-bold">Libmate</h2>
-            </div>
+            <Logo />
             <AiOutlineClose
               className="text-2xl cursor-pointer lg:hidden"
               onClick={closeSidebar}

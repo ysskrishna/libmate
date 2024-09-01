@@ -1,20 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-// const initialState = {
-//   role: null,
-//   isAuthenticated: false,
-//   accessToken: null,
-//   user: null,
-//   isLoading: false,
-// };
-
 const initialState = {
-  role: 'admin',
-  isAuthenticated: true,
-  accessToken: 'some-token',
-  user: {
-    name: 'Siva',
-  },
+  role: null,
+  isAuthenticated: false,
+  accessToken: null,
+  user: null,
   isLoading: false,
 };
 
@@ -23,17 +13,16 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setCredentials: (state, action) => {
-      const { role, isAuthenticated, accessToken } = action.payload;
-      state.role = role;
-      state.isAuthenticated = isAuthenticated;
-      state.accessToken = accessToken;
-      state.user = user;
+      state.role = action.payload?.role;
+      state.isAuthenticated = action.payload?.isAuthenticated;
+      state.accessToken = action.payload?.accessToken;
+      state.user = action.payload?.user;
       state.isLoading = false;
     },
     setIsLoading: (state, action) => {
       state.isLoading = action.payload.isLoading
     },
-    logout: (state) => {
+    unsetCredentials: (state) => {
       state.role = null;
       state.isAuthenticated = false;
       state.accessToken = null;
@@ -43,7 +32,7 @@ const authSlice = createSlice({
   },
 });
 
-export const { setCredentials, setIsLoading, logout } = authSlice.actions;
+export const { setCredentials, setIsLoading, unsetCredentials } = authSlice.actions;
 
 // selectors
 export const selectIsAuthenticated = (state) => state.auth.isAuthenticated;

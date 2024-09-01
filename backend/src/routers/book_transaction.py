@@ -6,6 +6,8 @@ from src.core.jwtutils import RoleChecker
 from src.services.book_transaction import BookTransactionService
 from src.models.models import Transaction
 from src.models import schemas, enums
+from typing import Optional
+
 
 import logging
 
@@ -39,3 +41,10 @@ async def return_books(transactions: list[schemas.ReturnRequestSchema], current_
     returned_transactions = await BookTransactionService.return_books(transactions, db)
     logger.info(f"Successfully returned {len(returned_transactions)} books")
     return returned_transactions
+
+@router.get("/user", response_model=list[schemas.UserBooksSchema])
+async def get_user_books(status: Optional[enums.BookTransactionStatus] = None, current_user: dict = Depends(RoleChecker([enums.RoleType.USER])), db: AsyncSession = Depends(get_db)):
+    logger.info(f"Processing user {current_user.get('id')} books based on status {status}") 
+    user_books = await BookTransactionService.get_user_books(status, current_user.get('id'), db) 
+    logger.info(f"Successfully fetched {len(user_books)} books for user {current_user.get('id')}")
+    return user_books

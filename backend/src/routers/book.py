@@ -12,10 +12,10 @@ router = APIRouter()
 logger = logging.getLogger(__name__)
 
 
-@router.get("/", response_model=list[schemas.BookResponseSchema])
+@router.get("/all", response_model=list[schemas.BookResponseSchema])
 async def get_books(current_user: dict = Depends(RoleChecker([enums.RoleType.ADMIN, enums.RoleType.USER])), db: AsyncSession = Depends(get_db)):
     logger.info("Fetching all books")
-    books = await BookService.get_books(db)
+    books = await BookService.get_all_books(db)
     logger.info(f"Found {len(books)} books")
     return books
 
