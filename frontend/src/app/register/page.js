@@ -1,17 +1,20 @@
 "use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import axios from 'axios';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { useDispatch, useSelector } from 'react-redux';
 import Button from '@/components/Button';
 import InputField from '@/components/InputField';
 import Dropdown from '@/components/Dropdown';
 import { ROLE } from '@/common/constants';
+import Logo from '@/components/Logo';
+import { selectIsLoading } from '@/redux/features/authSlice';
+import { register } from '@/redux/api/authApi';
 
-export default function Signup() {
-  const router = useRouter();
+
+export default function Register() {
+  const dispatch = useDispatch();
+  const isLoading = useSelector(selectIsLoading);
 
   const formik = useFormik({
     initialValues: {
@@ -30,21 +33,12 @@ export default function Signup() {
         .required('Confirm Password is required'),
       role: Yup.string().required('Role is required'),
     }),
-    onSubmit: async (values) => {
-      try {
-        const res = await axios.post('/api/auth/signup', {
-          fullName: values.fullName,
-          email: values.email,
-          password: values.password,
-          role: values.role,
-        });
-
-        if (res.status === 201) {
-          router.push('/login');
-        }
-      } catch (error) {
-        console.error('Signup failed', error);
-      }
+    onSubmit: (values) => {
+      dispatch(register(values.role, {
+        "email": values.email, 
+        "password": values.password,
+        "name": values.fullName,
+      }));
     },
   });
 
@@ -53,6 +47,9 @@ export default function Signup() {
       <form
         className="bg-white p-8 rounded-lg shadow-md max-w-sm w-full"
       >
+        <div className='mb-4 flex justify-center'>
+          <Logo />
+        </div>
         <div className="mb-4">
           <InputField
             label="Full Name"
@@ -123,9 +120,9 @@ export default function Signup() {
         
         <Button
           onClick={formik.handleSubmit}
-          disabled={formik.isSubmitting}
+          disabled={isLoading}
         >
-          {formik.isSubmitting ? 'Signing up...' : 'Signup'}
+          {isLoading ? 'Signing up...' : 'Signup'}
         </Button>
         <div className="mt-4 text-center">
           <a href="/login" className="text-gray-500 hover:underline">

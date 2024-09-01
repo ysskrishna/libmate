@@ -10,6 +10,8 @@ import { useDispatch } from 'react-redux';
 import { selectRole, selectUser, logout } from '@/redux/features/authSlice';
 import { ROLE } from '@/common/constants';
 import Button from '@/components/Button';
+import Logo from '@/components/Logo';
+
 
 const SidebarLink = ({ href, children, isSelected, onClick }) => (
   <Link href={href} className={`mb-2 p-2 flex items-center rounded hover:bg-gray-300 ${isSelected ? 'bg-gray-300' : ''}`} onClick={onClick}>
@@ -83,21 +85,11 @@ export default function Sidebar() {
 
   return (
     <div>
-      <div className="lg:hidden p-4 flex flex-row items-center">
-        <div id="left-div" className="flex-shrink-0">
-          <AiOutlineMenu
-            className="text-2xl cursor-pointer"
-            onClick={toggleSidebar}
-          />
-        </div>
-
-        <div id="center-div" className="flex-grow flex justify-center">
-          {selectedLinkChildren && (
-            <div className="flex items-center">
-              {selectedLinkChildren}
-            </div>
-          )}
-        </div>
+      <div className="lg:hidden p-4">
+        <AiOutlineMenu
+          className="text-2xl cursor-pointer"
+          onClick={toggleSidebar}
+        />
       </div>
 
       <div
@@ -107,10 +99,7 @@ export default function Sidebar() {
       >
         <div className='flex flex-col'>
           <div className='flex flex-row justify-between mb-4 lg:mb-6'>
-            <div className='flex flex-row items-center'>
-              <img src="/libmate_icon.png" alt="Libmate" className="w-8 h-8 mr-2" />
-              <h2 className="text-xl font-bold">Libmate</h2>
-            </div>
+            <Logo />
             <AiOutlineClose
               className="text-2xl cursor-pointer lg:hidden"
               onClick={closeSidebar}
