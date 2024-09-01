@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, NonNegativeInt, validator
 from typing import Optional
 from datetime import date
 from src.models import enums
@@ -28,9 +28,15 @@ class BookBase(BaseModel):
     description: Optional[str] = None
     genre: Optional[enums.BookGenre] = None
     publish_date: Optional[date] = None
-    total_copies: int
-    available_copies: int
+    total_copies: NonNegativeInt
+    available_copies: NonNegativeInt
 
+    @validator('publish_date')
+    def date_must_be_in_past(cls, value):
+        if value is not None and value >= date.today():
+            raise ValueError('Publish date must be in the past')
+        return value
+    
     class Config:
         use_enum_values = True
 
@@ -40,8 +46,6 @@ class UpdateBookRequestSchema(BaseModel):
     description: Optional[str] = None
     genre: Optional[enums.BookGenre] = None
     publish_date: Optional[date] = None
-    total_copies: Optional[int] = None
-    available_copies: Optional[int] = None
 
 class BookResponseSchema(BookBase):
     book_id: int

@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 class BookService:
 
     @staticmethod
-    async def get_books(db: AsyncSession):
+    async def get_all_books(db: AsyncSession):
         query = select(Book)
         result = await db.execute(query)
         books = result.scalars().all()
