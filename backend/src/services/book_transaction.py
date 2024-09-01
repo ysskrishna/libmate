@@ -1,10 +1,13 @@
 from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+from sqlalchemy import select
+from sqlalchemy.orm import selectinload
 from src.models.models import Transaction, Book
 from src.models import schemas, enums
 from src.core.dbutils import db_transaction_handler
 import logging
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -70,3 +73,14 @@ class BookTransactionService:
             return updated_transactions
         
         return await db_transaction_handler(db, inner_logic)
+    
+    @staticmethod
+    async def get_user_books(status: Optional[enums.BookTransactionStatus], user_id: int, db: AsyncSession):
+        query = select(Transaction).options(selectinload(Transaction.book)).filter(Transaction.user_id == user_id)
+        if status:
+            query = query.filter(Transaction.status == status)
+        
+        result = await db.execute(query)
+        user_books = result.scalars().all()
+        print(user_books)
+        return user_books

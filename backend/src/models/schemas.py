@@ -70,3 +70,18 @@ class BookTransactionResponseSchema(BaseModel):
     class Config:
         orm_mode = True
         from_attributes=True
+
+
+class UserBooksSchema(BaseModel):
+    transaction_id: int
+    book_id: int
+    user_id: int
+    collected_date: date
+    due_date: date
+    return_date: Optional[date]
+    status: enums.BookTransactionStatus
+    book: BookBase
+
+    class Config:
+        orm_mode = True
+        from_attributes=True
