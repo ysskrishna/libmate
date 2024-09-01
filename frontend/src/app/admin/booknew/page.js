@@ -1,18 +1,28 @@
 "use client";
 
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+
 import { ROLE, BookGenre } from '@/common/constants';
 import Button from '@/components/Button';
 import InputField from '@/components/InputField';
 import Dropdown from '@/components/Dropdown';
 import CommonLayout from '@/components/Layout/commonLayout';
+import { createNewBook  } from '@/redux/api/booksApi';
+import { selectIsLoading } from '@/redux/features/booksSlice';
+import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
-import { useFormik } from 'formik';
-import axios from 'axios';
-import * as Yup from 'yup';
 
 
 const BookNew = () => {
+  const dispatch = useDispatch();
+  const isLoading = useSelector(selectIsLoading);
   const router = useRouter();
+
+  const handleSuccessCallback = () => {
+    formik.resetForm();
+    router.push('/admin/dashboard');
+  }
 
   const formik = useFormik({
     initialValues: {
@@ -35,15 +45,16 @@ const BookNew = () => {
         .required('Publish date is required')
         .typeError('Invalid date format'),
     }),
-    onSubmit: async (values, { setSubmitting }) => {
-      try {
-        await axios.post('/api/books', values);
-        router.push('/books'); // Redirect to books list after adding
-      } catch (error) {
-        console.error('Failed to add book:', error);
-      } finally {
-        setSubmitting(false);
-      }
+    onSubmit: (values) => {
+      dispatch(createNewBook({
+        "title": values?.title,
+        "author": values?.author,
+        "description": values?.description,
+        "genre": values?.genre,
+        "publish_date": values?.publishDate,
+        "total_copies": values?.totalCopies,
+        "available_copies": values?.totalCopies
+      }, handleSuccessCallback));
     },
   });
 
@@ -136,10 +147,10 @@ const BookNew = () => {
             </div>
 
             <Button
-              type="submit"
-              disabled={formik.isSubmitting}
+              onClick={formik.handleSubmit}
+              disabled={isLoading}
             >
-              {formik.isSubmitting ? 'Adding book...' : 'Add book'}
+              {isLoading ? 'Adding book...' : 'Add book'}
             </Button>
           </div>
         </div>

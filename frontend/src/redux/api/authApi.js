@@ -17,7 +17,7 @@ export const login = (role, data) => async (dispatch) => {
       }
       
       const method = 'POST';
-      const response = await handleFetch(url, method, data, true)
+      const response = await handleFetch(url, method, data, true);
       console.log("login response", response);
 
       await dispatch(setCredentials({
@@ -29,14 +29,14 @@ export const login = (role, data) => async (dispatch) => {
 
       toastSuccess('Login success');
       if (response?.role === ROLE.ADMIN) {
-        navigate('/admin/dashboard')
+        await navigate('/admin/dashboard')
       } else if (response?.role === ROLE.USER) {
-        navigate('/user/dashboard')
+        await navigate('/user/dashboard')
       }
     } catch (error) {
       await dispatch(setIsLoading({isLoading:false}));
       console.error('UnknownError:', error);
-      toastError('Something went wrong. Please try again');
+      toastError(error?.message);
     }
 };
 
@@ -63,18 +63,18 @@ export const register = (role, data) => async (dispatch) => {
 
       toastSuccess('Register success');
       if (response?.role === ROLE.ADMIN) {
-        navigate('/admin/dashboard')
+        await navigate('/admin/dashboard');
       } else if (response?.role === ROLE.USER) {
-        navigate('/user/dashboard')
+        await navigate('/user/dashboard');
       }
     } catch (error) {
       await dispatch(setIsLoading({isLoading:false}));
       console.error('UnknownError:', error);
-      toastError('Something went wrong. Please try again');
+      toastError(error?.message);
     }
 };
 
 export const logout = () => async (dispatch) => {
     dispatch(unsetCredentials());
-    navigate('/login');
+    await navigate('/login');
 }

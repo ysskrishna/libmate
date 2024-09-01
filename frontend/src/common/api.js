@@ -19,7 +19,26 @@ export const handleFetch = async (url, method, body, isPublic=false) => {
       headers,
       body: body ? JSON.stringify(body) : undefined
     });
-  
+    
+    if (!response.ok) {
+      const errorjson = await response.json();
+      let errorMessage;
+
+      if (response.status === 422) {
+        errorMessage = errorjson?.detail[0]?.msg;
+      } else {
+        errorMessage = errorjson?.detail;
+      }
+
+      if (!errorMessage) {
+        errorMessage = 'An error occurred';
+      }
+
+      const error = new Error(errorMessage);
+      error.status = response.status;
+      throw error;
+    }
+    
     return response.json();
 };
 
