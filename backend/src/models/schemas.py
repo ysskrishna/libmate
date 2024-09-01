@@ -14,11 +14,13 @@ class RegisterSchema(BaseModel):
     password: str
 
 
+class UserSchema(BaseModel):
+    name: str
+
 class TokenResponseSchema(BaseModel):
     access_token: str
-    name: str
     role: str
-
+    user: UserSchema
 
 class BookBase(BaseModel):
     title: str
