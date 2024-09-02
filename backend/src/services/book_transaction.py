@@ -7,7 +7,6 @@ from src.models.models import Transaction, Book
 from src.models import schemas, enums
 from src.core.dbutils import db_transaction_handler
 import logging
-from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -75,12 +74,13 @@ class BookTransactionService:
         return await db_transaction_handler(db, inner_logic)
     
     @staticmethod
-    async def get_user_books(status: Optional[enums.BookTransactionStatus], user_id: int, db: AsyncSession):
+    async def get_user_books(status: enums.UserBookFilterStatus, user_id: int, db: AsyncSession):
         query = select(Transaction).options(selectinload(Transaction.book)).filter(Transaction.user_id == user_id)
-        if status:
-            query = query.filter(Transaction.status == status)
+        if status == enums.UserBookFilterStatus.BORROWED:
+            query = query.filter(Transaction.status == enums.BookTransactionStatus.CHECKOUT.value)
+        elif status == enums.UserBookFilterStatus.RETURNED:
+            query = query.filter(Transaction.status == enums.BookTransactionStatus.RETURN.value)
         
         result = await db.execute(query)
         user_books = result.scalars().all()
-        print(user_books)
         return user_books
