@@ -23,8 +23,6 @@ const Dashboard = () => {
   };
 
   const handleReturnClick = (book) => {
-    console.log(`Return book`, book);
-
     const data = [
       {
         "transaction_id": book.transaction_id,
