@@ -47,6 +47,9 @@ class UpdateBookRequestSchema(BaseModel):
     genre: Optional[enums.BookGenre] = None
     publish_date: Optional[date] = None
 
+    class Config:
+        use_enum_values = True
+
 class BookResponseSchema(BookBase):
     book_id: int
 

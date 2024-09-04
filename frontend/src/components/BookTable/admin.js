@@ -1,26 +1,32 @@
 "use client";
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectBooks } from '@/redux/features/booksSlice';
-import { getAllBooks } from '@/redux/api/booksApi';
+import { getAllBooks, deleteBook } from '@/redux/api/booksApi';
+import UpdateBookModal from '@/app/admin/dashboard/modals/updateBookModal';
 
 export default function BookTable() {
   const [gridApi, setGridApi] = useState(null);
   const dispatch = useDispatch();
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const [selectedBook, setSelectedBook] = useState(null);
 
   const books = useSelector(selectBooks);
 
   const handleEdit = (book) => {
-    console.log("handleEdit", book);
+    // console.log("handleEdit", book);
+    setSelectedBook(book);
+    setShowUpdateModal(true);
   }
 
   const handleDelete = (book) => {
-    console.log("handleDelete", book);
+    // console.log("handleDelete", book);
+    dispatch(deleteBook(book.book_id));
   }
 
   useEffect(() => {
@@ -78,6 +84,7 @@ export default function BookTable() {
   };
 
   return (
+    <>
     <div className="flex flex-col md:flex-row justify-center">
       <div className="ag-theme-alpine w-full">
         <AgGridReact
@@ -90,5 +97,11 @@ export default function BookTable() {
         />
       </div>
     </div>
+    <UpdateBookModal 
+      show={showUpdateModal} 
+      onClose={() => setShowUpdateModal(false)} 
+      book={selectedBook}
+    />
+    </>
   );
 }
