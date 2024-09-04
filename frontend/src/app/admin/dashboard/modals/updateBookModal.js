@@ -123,6 +123,7 @@ const UpdateBookModal = ({show, onClose, book}) => {
             <Button
               onClick={formik.handleSubmit}
               isLoading={isLoading}
+              buttonContainerClassName="w-full"
             >
               Update book
             </Button>

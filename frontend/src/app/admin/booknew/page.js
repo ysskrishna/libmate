@@ -149,6 +149,7 @@ const BookNew = () => {
             <Button
               onClick={formik.handleSubmit}
               isLoading={isLoading}
+              buttonContainerClassName="w-full"
             >
               Add book
             </Button>
