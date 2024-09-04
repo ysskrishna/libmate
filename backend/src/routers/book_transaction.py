@@ -16,6 +16,14 @@ logger = logging.getLogger(__name__)
 @router.post("/checkout", response_model=list[schemas.BookTransactionResponseSchema])
 async def checkout_books(transactions: list[schemas.CheckoutRequestSchema], current_user: dict = Depends(RoleChecker([enums.RoleType.ADMIN, enums.RoleType.USER])), db: AsyncSession = Depends(get_db)):
     logger.info("Processing checkout for multiple books")
+    if current_user.get('role'  ) == enums.RoleType.USER:
+        for transaction in transactions:
+            if transaction.user_id != current_user.get("id"):
+                logger.error(f"User ID mismatch: {transaction.user_id} does not match current user {current_user.get('id')}")
+                raise HTTPException(
+                    status_code=status.HTTP_403_FORBIDDEN,
+                    detail="You are not authorized to checkout these books"
+                )
     checked_out_transactions = await BookTransactionService.checkout_books(transactions, db)
     logger.info(f"Successfully checked out {len(checked_out_transactions)} books")
     return checked_out_transactions

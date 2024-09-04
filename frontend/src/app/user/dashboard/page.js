@@ -1,61 +1,75 @@
 "use client";
 
-import React, { useState } from 'react';
-import sampleData from '@/sampleData';
-import { ROLE } from '@/common/constants';
-import ProtectedRoute from '@/components/ProtectedRoute';
-import Sidebar from '@/components/Sidebar';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Role, BookFilterStatus } from '@/common/constants';
 import Dropdown from '@/components/Dropdown';
-import BookCard from '@/components/BookCard'; // Assuming the BookCard component is in the same folder
+import BookCard from '@/components/BookCard'; 
+import CommonLayout from '@/components/Layout/commonLayout';
+import { getUserHomeBooks, returnBook } from '@/redux/api/userHomeApi';
+import { selectBooks, selectBookFilterStatus } from '@/redux/features/userHomeSlice';
+import { getTodayDate } from '@/common/utils';
+
 
 const Dashboard = () => {
-  const [selectedBooks, setSelectedBooks] = useState(sampleData.AllBooks);
+  
+  const dispatch = useDispatch();
+  const books = useSelector(selectBooks); 
+  const bookFilterStatus = useSelector(selectBookFilterStatus);
 
   const handleFilterChange = (e) => {
     const filter = e.target.value;
-    if (filter === 'all') {
-      setSelectedBooks(sampleData.AllBooks);
-    } else if (filter === 'active') {
-      setSelectedBooks(sampleData.Active);
-    } else if (filter === 'pending') {
-      setSelectedBooks(sampleData.Pending);
-    }
+    dispatch(getUserHomeBooks(filter));
   };
 
-  const handleReturnClick = (transactionId) => {
-    console.log(`Return book with transaction ID: ${transactionId}`);
-    // Handle the return logic here
+  const handleReturnClick = (book) => {
+    console.log(`Return book`, book);
+
+    const data = [
+      {
+        "transaction_id": book.transaction_id,
+        "return_date": getTodayDate()
+      }
+    ]
+
+    dispatch(returnBook(data));
   };
+
+  useEffect(() => {
+    dispatch(getUserHomeBooks(bookFilterStatus));
+  }, []);
 
   return (
-    <ProtectedRoute allowedRoles={[ROLE.USER]}>
-      <div className="flex h-screen flex-col lg:flex-row">
-        <Sidebar />
-         <div className="p-4">
-          <div className="flex justify-between items-center mb-4">
+    <CommonLayout allowedRoles={[Role.USER]}>
+      <div className="p-4">
+        <div className="flex justify-between items-center mb-4">
           <Dropdown
-            name="role"
+            name="status"
             onChange={handleFilterChange}
             className="p-2 border"
+            value={bookFilterStatus}
           >
-            <option value="all">All Books</option>
-            <option value="active">Active</option>
-            <option value="pending">Pending</option>
-          </Dropdown>  
-          </div>
+            {
+              Object.keys(BookFilterStatus).map((key) => (
+                <option key={key} value={BookFilterStatus[key].value}>
+                  {BookFilterStatus[key].label}
+                </option>
+              ))
+            }
+          </Dropdown>
+        </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {selectedBooks.map((book, index) => (
-                <BookCard
-                  key={index}
-                  book={book}
-                  onReturnClick={handleReturnClick}
-                />
-            ))}
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {books.map((book, index) => (
+              <BookCard
+                key={index}
+                book={book}
+                onReturnClick={handleReturnClick}
+              />
+          ))}
         </div>
       </div>
-    </ProtectedRoute>
+    </CommonLayout>
   );
 };
 

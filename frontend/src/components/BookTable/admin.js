@@ -19,13 +19,11 @@ export default function BookTable() {
   const books = useSelector(selectBooks);
 
   const handleEdit = (book) => {
-    // console.log("handleEdit", book);
     setSelectedBook(book);
     setShowUpdateModal(true);
   }
 
   const handleDelete = (book) => {
-    // console.log("handleDelete", book);
     dispatch(deleteBook(book.book_id));
   }
 

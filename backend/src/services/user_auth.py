@@ -30,7 +30,7 @@ class UserAuthService:
             await db.refresh(new_user)
 
             access_token = create_access_token(new_user.email, UserAuthService.role)
-            return {"access_token": access_token, "user": {"name": new_user.name}, "role": UserAuthService.role}
+            return {"access_token": access_token, "user": {"name": new_user.name, "id": new_user.user_id}, "role": UserAuthService.role}
         
         return await db_transaction_handler(db, inner_logic)
     
@@ -46,4 +46,4 @@ class UserAuthService:
 
         logger.info(f"User login successful for email: {user.email}")
         access_token = create_access_token(db_user.email, UserAuthService.role)
-        return {"access_token": access_token, "user": {"name": db_user.name}, "role": UserAuthService.role}
+        return {"access_token": access_token, "user": {"name": db_user.name, "id": db_user.user_id}, "role": UserAuthService.role}

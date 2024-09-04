@@ -3,7 +3,7 @@
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-import { ROLE, BookGenre } from '@/common/constants';
+import { Role, BookGenre } from '@/common/constants';
 import Button from '@/components/Button';
 import InputField from '@/components/InputField';
 import Dropdown from '@/components/Dropdown';
@@ -59,7 +59,7 @@ const BookNew = () => {
   });
 
   return (
-    <CommonLayout allowedRoles={[ROLE.ADMIN]}>      
+    <CommonLayout allowedRoles={[Role.ADMIN]}>      
       <div className='flex-1 p-3 mb-3'>
         <div className="flex items-center justify-center">
           <div className="bg-white p-8 rounded-lg shadow-md max-w-sm w-full">
@@ -148,9 +148,9 @@ const BookNew = () => {
 
             <Button
               onClick={formik.handleSubmit}
-              disabled={isLoading}
+              isLoading={isLoading}
             >
-              {isLoading ? 'Adding book...' : 'Add book'}
+              Add book
             </Button>
           </div>
         </div>

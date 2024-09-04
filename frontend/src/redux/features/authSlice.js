@@ -1,12 +1,24 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+// const initialState = {
+//   role: null,
+//   isAuthenticated: false,
+//   accessToken: null,
+//   user: null,
+//   isLoading: false,
+// };
+
+
 const initialState = {
-  role: null,
-  isAuthenticated: false,
-  accessToken: null,
-  user: null,
+  role: 'user',
+  isAuthenticated: true,
+  accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqb2huQGdtYWlsLmNvbSIsImV4cCI6MTcyNTMwOTQzNywicm9sZSI6InVzZXIifQ.Rir69uHAJy1L1tLAezGsROuvjlJy7PMBWuzvjcqvIIA",
+  user: {
+    "name": "John"
+  },
   isLoading: false,
 };
+
 
 const authSlice = createSlice({
   name: 'auth',

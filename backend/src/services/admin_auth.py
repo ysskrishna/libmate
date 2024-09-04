@@ -30,7 +30,7 @@ class AdminAuthService:
             await db.refresh(new_admin)
 
             access_token = create_access_token(new_admin.email, AdminAuthService.role)
-            return {"access_token": access_token, "user": {"name": new_admin.name}, "role": AdminAuthService.role}
+            return {"access_token": access_token, "user": {"name": new_admin.name, "id": new_admin.admin_id}, "role": AdminAuthService.role}
         
         return await db_transaction_handler(db, inner_logic)
 
@@ -46,4 +46,4 @@ class AdminAuthService:
 
         logger.info(f"Admin login successful for email: {admin.email}")
         access_token = create_access_token(db_admin.email, AdminAuthService.role)
-        return {"access_token": access_token, "user": {"name": db_admin.name}, "role": AdminAuthService.role}
+        return {"access_token": access_token, "user": {"name": db_admin.name, "id": db_admin.admin_id}, "role": AdminAuthService.role}

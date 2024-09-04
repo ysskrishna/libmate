@@ -1,5 +1,5 @@
 import config from "@/common/config";
-import { ROLE } from "@/common/constants";
+import { Role } from "@/common/constants";
 import { toastSuccess, toastError } from "@/common/toast";
 import { setIsLoading, setCredentials, unsetCredentials } from "@/redux/features/authSlice";
 import { handleFetch } from "@/common/api";
@@ -10,7 +10,7 @@ export const login = (role, data) => async (dispatch) => {
     try {
       await dispatch(setIsLoading({isLoading:true}));
       let url;
-      if (role === ROLE.ADMIN) {
+      if (role === Role.ADMIN) {
         url = `${config?.baseUrl}/api/admin/auth/login`;
       } else {
         url = `${config?.baseUrl}/api/user/auth/login`;
@@ -28,9 +28,9 @@ export const login = (role, data) => async (dispatch) => {
       }));
 
       toastSuccess('Login success');
-      if (response?.role === ROLE.ADMIN) {
+      if (response?.role === Role.ADMIN) {
         await navigate('/admin/dashboard')
-      } else if (response?.role === ROLE.USER) {
+      } else if (response?.role === Role.USER) {
         await navigate('/user/dashboard')
       }
     } catch (error) {
@@ -44,7 +44,7 @@ export const register = (role, data) => async (dispatch) => {
     try {
       await dispatch(setIsLoading({isLoading:true}));
       let url;
-      if (role === ROLE.ADMIN) {
+      if (role === Role.ADMIN) {
         url = `${config?.baseUrl}/api/admin/auth/register`;
       } else {
         url = `${config?.baseUrl}/api/user/auth/register`;
@@ -62,9 +62,9 @@ export const register = (role, data) => async (dispatch) => {
       }));
 
       toastSuccess('Register success');
-      if (response?.role === ROLE.ADMIN) {
+      if (response?.role === Role.ADMIN) {
         await navigate('/admin/dashboard');
-      } else if (response?.role === ROLE.USER) {
+      } else if (response?.role === Role.USER) {
         await navigate('/user/dashboard');
       }
     } catch (error) {

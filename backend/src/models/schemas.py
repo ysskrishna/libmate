@@ -16,6 +16,7 @@ class RegisterSchema(BaseModel):
 
 class UserSchema(BaseModel):
     name: str
+    id: int
 
 class TokenResponseSchema(BaseModel):
     access_token: str

@@ -1,21 +1,23 @@
 "use client";
 
+import Button from '@/components/Button';
+
 const BookCard = ({ book, onReturnClick }) => {
   return (
     <div className="border p-4 mb-4">
-      <h3 className="text-lg font-bold">{book.book.title}</h3>
-      <p>Borrowed on: {book.collected_date}</p>
+      <h3 className="text-lg font-bold">{book?.book?.title}</h3>
+      <p>Borrowed on: {book?.collected_date}</p>
       {book.return_date ? (
-        <p>Return Date: {book.return_date}</p>
+        <p>Return Date: {book?.return_date}</p>
       ) : (
         <>
-          <p>Submission Due: {book.due_date}</p>
-          <button
-            className="bg-blue-500 text-white px-4 py-2 mt-2"
-            onClick={() => onReturnClick(book.transaction_id)}
+          <p className="mb-2">Submission Due: {book?.due_date}</p>
+          <Button 
+            buttonContainerClassName="!bg-red-100 !text-red-600 hover:!bg-red-200"
+            onClick={() => onReturnClick(book)}
           >
             Return
-          </button>
+          </Button>
         </>
       )}
     </div>
