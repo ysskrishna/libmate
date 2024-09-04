@@ -8,7 +8,7 @@ import { FaHome, FaSearch, FaShoppingCart, FaPlus } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '@/redux/api/authApi';
 import { selectRole, selectUser } from '@/redux/features/authSlice';
-import { ROLE } from '@/common/constants';
+import { Role } from '@/common/constants';
 import Button from '@/components/Button';
 import Logo from '@/components/Logo';
 
@@ -49,11 +49,11 @@ export default function Sidebar() {
 
 
   const links = {
-    [ROLE.ADMIN]: [
+    [Role.ADMIN]: [
       { href: "/admin/dashboard", content: <><FaHome className="mr-2" /> Home</>},
       { href: "/admin/booknew", content: <><FaPlus className="mr-2" /> Book New</>}
     ],
-    [ROLE.USER]: [
+    [Role.USER]: [
       { href: "/user/dashboard", content: <><FaHome className="mr-2" /> Home</>},
       { href: "/user/search", content: <><FaSearch className="mr-2" /> Search</>},
       { href: "/user/cart", content: <><FaShoppingCart className="mr-2" /> Cart</>}
@@ -112,7 +112,12 @@ export default function Sidebar() {
 
         <div className='flex-col justify-end'>
           <p className='font-bold mb-2'>Welcome, <span className="italic">{user?.name}</span></p>
-          <Button onClick={handleLogout}>Logout</Button>
+          <Button 
+            onClick={handleLogout} 
+            buttonContainerClassName="w-full !bg-red-100 !text-red-600 hover:!bg-red-200"
+          >
+            Logout
+          </Button>
         </div>
       </div>
 

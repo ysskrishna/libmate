@@ -19,13 +19,11 @@ export default function BookTable() {
   const books = useSelector(selectBooks);
 
   const handleEdit = (book) => {
-    // console.log("handleEdit", book);
     setSelectedBook(book);
     setShowUpdateModal(true);
   }
 
   const handleDelete = (book) => {
-    // console.log("handleDelete", book);
     dispatch(deleteBook(book.book_id));
   }
 
@@ -92,6 +90,7 @@ export default function BookTable() {
           columnDefs={columnDefs}
           pagination={true}
           paginationPageSize={10}
+          paginationPageSizeSelector={[10, 20, 50, 100]}
           onGridReady={onGridReady}
           domLayout="autoHeight"
         />

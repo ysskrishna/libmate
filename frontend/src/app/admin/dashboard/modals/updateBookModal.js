@@ -12,7 +12,6 @@ import { BookGenre } from '@/common/constants';
 
 
 const UpdateBookModal = ({show, onClose, book}) => {
-  console.log("Book", book);
   const dispatch = useDispatch();
   const isLoading = useSelector(selectIsLoading);
 
@@ -46,7 +45,7 @@ const UpdateBookModal = ({show, onClose, book}) => {
       }, () => onClose()));
     },
   });
-  console.log("formik", formik.values);
+  
   return (
     <Modal show={show} onClose={onClose}>
         <h2 className="text-xl mb-4">Update Book</h2>
@@ -123,9 +122,10 @@ const UpdateBookModal = ({show, onClose, book}) => {
 
             <Button
               onClick={formik.handleSubmit}
-              disabled={isLoading}
+              isLoading={isLoading}
+              buttonContainerClassName="w-full"
             >
-              {isLoading ? 'Updating book...' : 'Update book'}
+              Update book
             </Button>
         
     </Modal>

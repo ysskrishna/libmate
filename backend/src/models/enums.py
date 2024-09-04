@@ -9,7 +9,7 @@ class BookTransactionStatus(str, Enum):
     CHECKOUT = "CHECKOUT"
     RETURN = "RETURN"
 
-class BookGenre(Enum):
+class BookGenre(str, Enum):
     FICTION = "Fiction"
     NON_FICTION = "Non-Fiction"
     MYSTERY = "Mystery"
@@ -19,3 +19,8 @@ class BookGenre(Enum):
     HISTORY = "History"
     ROMANCE = "Romance"
     THRILLER = "Thriller"
+
+class UserBookFilterStatus(str, Enum):
+    ALL = "all"
+    BORROWED = "borrowed"
+    RETURNED = "returned"

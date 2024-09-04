@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Button from '@/components/Button';
 import InputField from '@/components/InputField';
 import Dropdown from '@/components/Dropdown';
-import { ROLE } from '@/common/constants';
+import { Role } from '@/common/constants';
 import Logo from '@/components/Logo';
 import { selectIsLoading } from '@/redux/features/authSlice';
 import { login } from '@/redux/api/authApi';
@@ -21,12 +21,12 @@ export default function Login() {
     initialValues: {
       email: '',
       password: '',
-      role: ROLE.USER,
+      role: Role.USER,
     },
     validationSchema: Yup.object({
       email: Yup.string().email('Invalid email format').required('Email is required'),
       password: Yup.string().required('Password is required'),
-      role: Yup.string().oneOf([ROLE.USER, ROLE.ADMIN], 'Invalid Role').required('Role is required'),
+      role: Yup.string().oneOf([Role.USER, Role.ADMIN], 'Invalid Role').required('Role is required'),
     }),
     onSubmit: (values) => {
       dispatch(login(values.role, {
@@ -80,16 +80,17 @@ export default function Login() {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           >
-            <option value={ROLE.USER}>User</option>
-            <option value={ROLE.ADMIN}>Admin</option>
+            <option value={Role.USER}>User</option>
+            <option value={Role.ADMIN}>Admin</option>
           </Dropdown>
         </div>
 
         <Button
           onClick={formik.handleSubmit}
-          disabled={isLoading}
+          isLoading={isLoading}
+          buttonContainerClassName="w-full"
         >
-          {isLoading ? 'Logging in...' : 'Login'}
+          Login
         </Button>
 
         <div className="mt-4 text-center">

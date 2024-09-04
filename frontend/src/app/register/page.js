@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Button from '@/components/Button';
 import InputField from '@/components/InputField';
 import Dropdown from '@/components/Dropdown';
-import { ROLE } from '@/common/constants';
+import { Role } from '@/common/constants';
 import Logo from '@/components/Logo';
 import { selectIsLoading } from '@/redux/features/authSlice';
 import { register } from '@/redux/api/authApi';
@@ -22,7 +22,7 @@ export default function Register() {
       email: '',
       password: '',
       confirmPassword: '',
-      role: ROLE.USER,
+      role: Role.USER,
     },
     validationSchema: Yup.object({
       fullName: Yup.string().required('Full Name is required'),
@@ -112,17 +112,18 @@ export default function Register() {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           >
-            <option value={ROLE.USER}>User</option>
-            <option value={ROLE.ADMIN}>Admin</option>
+            <option value={Role.USER}>User</option>
+            <option value={Role.ADMIN}>Admin</option>
           </Dropdown>
         </div>
 
         
         <Button
           onClick={formik.handleSubmit}
-          disabled={isLoading}
+          isLoading={isLoading}
+          buttonContainerClassName="w-full"
         >
-          {isLoading ? 'Signing up...' : 'Signup'}
+          Signup
         </Button>
         <div className="mt-4 text-center">
           <a href="/login" className="text-gray-500 hover:underline">

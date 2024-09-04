@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
 import { selectRole, selectIsAuthenticated } from '@/redux/features/authSlice';
-import { ROLE } from '@/common/constants';
+import { Role } from '@/common/constants';
 
 
 export default function Page() {
@@ -16,9 +16,9 @@ export default function Page() {
     if (!isAuthenticated) {
       router.push('/login');
     } else {
-      if (role === ROLE.USER) {
+      if (role === Role.USER) {
         router.push('/user/dashboard');
-      } else if (role === ROLE.ADMIN) {
+      } else if (role === Role.ADMIN) {
         router.push('/admin/dashboard');
       }
     }
