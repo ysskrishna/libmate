@@ -1,7 +1,7 @@
 import config from "@/common/config";
 import { Role } from "@/common/constants";
 import { toastSuccess, toastError } from "@/common/toast";
-import { setIsLoading, setCredentials, unsetCredentials } from "@/redux/features/authSlice";
+import { setIsLoading, setCredentials } from "@/redux/features/authSlice";
 import { handleFetch } from "@/common/api";
 import { navigate } from "@/common/navigation";
 
@@ -75,6 +75,6 @@ export const register = (role, data) => async (dispatch) => {
 };
 
 export const logout = () => async (dispatch) => {
-    dispatch(unsetCredentials());
+    dispatch({ type: 'RESET_STORE' });
     await navigate('/login');
 }
