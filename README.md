@@ -67,6 +67,10 @@ A full stack application for a library book vending application. It is designed 
   <source src="./media/libmate_user_demo.mp4" type="video/mp4">
 </video>
 
+
+https://github.com/user-attachments/assets/beebd49a-4143-4efb-a8ec-5e95c4675e0a
+
+
 ### Admin - Login Page
 <img src="./media/admin_login.JPG" alt="Admin Login Page"/>
 
@@ -82,6 +86,10 @@ A full stack application for a library book vending application. It is designed 
 <video width="320" height="240" controls>
   <source src="./media/libmate_admin_demo.mp4" type="video/mp4">
 </video>
+
+
+https://github.com/user-attachments/assets/245bd896-74c6-43ae-9126-12d275c7b481
+
 
 
 # License
