@@ -50,9 +50,9 @@ export default function BookTable() {
             </button>
             <button
                 type="button"
-                className="bg-gray-200 rounded px-2 py-2 text-xs font-medium text-center hover:bg-gray-300"
+                className="bg-red-100 rounded px-2 py-2 text-xs font-medium text-center hover:bg-red-200"
                 onClick={() => handleDelete(params.data)}
-            ><FaTrash />
+            ><FaTrash className='text-red-600' />
             </button>
         </div>
       ),

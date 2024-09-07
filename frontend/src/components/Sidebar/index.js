@@ -22,7 +22,6 @@ const SidebarLink = ({ href, children, isSelected, onClick }) => (
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedLink, setSelectedLink] = useState('');
-  const [selectedLinkChildren, setSelectedLinkChildren] = useState(null);
 
   let role = useSelector(selectRole);
   let user = useSelector(selectUser);
@@ -43,7 +42,6 @@ export default function Sidebar() {
 
   const handleLinkClick = (link, children) => {
     setSelectedLink(link);
-    setSelectedLinkChildren(children);
     closeSidebar();
   };
 
@@ -66,7 +64,6 @@ export default function Sidebar() {
     
     if (currentLink) {
       setSelectedLink(currentLink.href);
-      setSelectedLinkChildren(currentLink.content);
     }
   }, []);
 

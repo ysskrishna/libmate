@@ -32,7 +32,7 @@ const Cart = () => {
 
   return (
     <CommonLayout allowedRoles={[Role.USER]}>
-      <div className="p-4">
+      <div className="flex-1 p-3 overflow-y-auto">
           <h1 className="text-2xl font-bold mb-4">Your Cart</h1>
             <div className='flex flex-col'>
               {cartBooks.length > 0 ? (

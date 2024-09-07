@@ -39,7 +39,7 @@ const Dashboard = () => {
 
   return (
     <CommonLayout allowedRoles={[Role.USER]}>
-      <div className="p-4">
+      <div className="flex-1 p-3 overflow-y-auto">
         <div className="flex justify-between items-center mb-4">
           <Dropdown
             name="status"

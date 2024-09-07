@@ -60,7 +60,7 @@ const BookNew = () => {
 
   return (
     <CommonLayout allowedRoles={[Role.ADMIN]}>      
-      <div className='flex-1 p-3 mb-3'>
+      <div className='flex-1 p-3 mb-3 overflow-y-auto'>
         <div className="flex items-center justify-center">
           <div className="bg-white p-8 rounded-lg shadow-md max-w-sm w-full">
             <div className="mb-4">
