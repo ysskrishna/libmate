@@ -2,6 +2,13 @@
 
 This is the frontend application for the Library Management System, built with Next.js and tailwindcss.
 
+
+## Techstack used
+- NextJS
+- Redux Toolkit
+- Redux Persist
+- Tailwindcss
+
 ## Install dependencies
 ```
 npm install

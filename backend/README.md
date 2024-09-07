@@ -2,6 +2,13 @@
 
 This is the backend service for the Library Management System, built with FastAPI and SQLAlchemy.
 
+## Techstack used
+- FastAPI
+- Postgres
+- Alembic
+- SQLAlchemy
+- Docker
+
 ## Prerequisites
 
 - Python 3.8+

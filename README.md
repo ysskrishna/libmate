@@ -2,6 +2,17 @@
 
 A full stack application for a library book vending application. It is designed to manage book inventories, and member management, ensuring a seamless experience for borrowing and returning books through automated vending machines.
 
+## Techstack used
+- NextJS
+- Redux Toolkit
+- Redux Persist
+- Tailwindcss
+- FastAPI
+- Postgres
+- Alembic
+- SQLAlchemy
+- Docker
+
 
 ## Features
 
