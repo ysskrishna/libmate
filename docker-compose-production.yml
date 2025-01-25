@@ -1,12 +1,13 @@
 version: '3.8'
-# expose backend/logs directory in backend container
 
 services:
   backend:
     build:
       context: ./backend
+    environment:
+      - ENVIRONMENT=production
     env_file:
-      - backend/.env.development
+      - backend/.env.production
     ports:
       - "8081:8081"
     depends_on:

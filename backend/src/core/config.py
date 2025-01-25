@@ -7,14 +7,15 @@ logger = logging.getLogger(__name__)
 
 ENVIRONMENT = os.getenv('ENVIRONMENT','local')
 
-if ENVIRONMENT == 'development':
-    logger.info('Loading development environment from .env.development')
-    load_dotenv('.env.development')
+if ENVIRONMENT == 'production':
+    logger.info('Loading production environment from .env.production')
+    load_dotenv('.env.production')
 else:
     logger.info('Loading local environment from .env.local')
     load_dotenv('.env.local')
 
 class Config(object):
+    ENVIRONMENT = ENVIRONMENT
     DATABASE_URL = os.getenv('DATABASE_URL')
     ALEMBIC_DATABASE_URL = os.getenv('ALEMBIC_DATABASE_URL')
     JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY')
