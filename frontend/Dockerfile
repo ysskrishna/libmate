@@ -9,4 +9,8 @@ RUN npm install
 
 COPY . .
 
-CMD ["npm", "run", "dev"]
+# Build the production version
+RUN npm run build
+
+# Run the production build
+CMD ["npm", "run", "start"]
