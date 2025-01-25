@@ -14,23 +14,44 @@ def setup_logging():
         'formatters': {
             'default': {
                 'format': '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-            },
+            }
         },
         'handlers': {
             'file': {
-                'level': 'INFO',
+                'level': 'DEBUG',
                 'class': 'logging.FileHandler',
                 'filename': log_file,
                 'formatter': 'default',
             },
             'console': {
-                'level': 'INFO',
+                'level': 'DEBUG',
                 'class': 'logging.StreamHandler',
                 'formatter': 'default',
+            }
+        },
+        'loggers': {
+            "": {  # Root logger
+                "handlers": ["file", "console"],
+                "level": "DEBUG",
             },
+            "uvicorn": {
+                "handlers": ["file", "console"],
+                "level": "INFO",
+                "propagate": False
+            },
+            "uvicorn.access": {
+                "handlers": ["file", "console"],
+                "level": "INFO",
+                "propagate": False
+            },
+            "uvicorn.error": {
+                "handlers": ["file", "console"],
+                "level": "ERROR",  # Only capture actual errors
+                "propagate": False
+            }
         },
         'root': {
             'handlers': ['file', 'console'],
-            'level': 'INFO',
+            'level': 'DEBUG',
         },
     })

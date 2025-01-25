@@ -42,4 +42,11 @@ async def serve_index():
 
 if __name__ == '__main__':
     import uvicorn
-    uvicorn.run(app, host='0.0.0.0', port=8081)
+    
+    uvicorn.run(
+        app,
+        host='0.0.0.0',
+        port=8081,
+        log_config=None,  # This tells Uvicorn to use the existing logging config
+        access_log=True
+    )
