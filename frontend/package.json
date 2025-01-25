@@ -1,8 +1,36 @@
 {
   "name": "library-management-app",
   "version": "0.1.0",
-  "author": "ysskrishna",
   "private": true,
+  "description": "Libmate Frontend - Library Management System",
+  "author": {
+    "name": "ysskrishna",
+    "url": "https://github.com/ysskrishna"
+  },
+  "keywords": [
+    "nextjs",
+    "typescript",
+    "react",
+    "tailwindcss",
+    "ysskrishna",
+    "book",
+    "library",
+    "books",
+    "lib",
+    "online library",
+    "library books",
+    "book management application",
+    "book management system",
+    "library management system",
+    "library management application",
+    "library management",
+    "libmate"
+  ],
+  "license": "AGPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ysskrishna/libmate"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
