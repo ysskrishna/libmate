@@ -9,7 +9,7 @@ import logging
 
 DATABASE_URL = Config.DATABASE_URL
 
-engine = create_async_engine(DATABASE_URL, echo=True)
+engine = create_async_engine(DATABASE_URL, echo=Config.SQLALCHEMY_ECHO)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine, class_=AsyncSession)
 Base = declarative_base()
 

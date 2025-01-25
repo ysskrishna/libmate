@@ -21,3 +21,4 @@ class Config(object):
     JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY')
     JWT_ALGORITHM = os.getenv('JWT_ALGORITHM')
     JWT_EXPIRE_MINUTES = int(os.getenv('JWT_EXPIRE_MINUTES'))
+    SQLALCHEMY_ECHO = os.getenv('SQLALCHEMY_ECHO', '').lower() == 'true'
