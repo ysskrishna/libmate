@@ -113,6 +113,6 @@ Prerequisites: Docker
 
 # License
 
-Copyright (c) 2024 [Y. Siva Sai Krishna]
+Copyright (c) 2024 [Y. Siva Sai Krishna](https://github.com/ysskrishna)
 
 This project is licensed under the AGPL-3.0 License - see the LICENSE file for details.
