@@ -1,5 +1,7 @@
 # Library Management System
 
+[![License: AGPL-3.0](https://img.shields.io/github/license/ysskrishna/libmate)](https://github.com/ysskrishna/libmate/blob/main/LICENSE) [![Author site](https://img.shields.io/badge/author-ysskrishna.space-informational)](https://ysskrishna.space)
+
 A full stack application for a library book vending application. It is designed to manage book inventories, and member management, ensuring a seamless experience for borrowing and returning books through automated vending machines.
 
 
@@ -53,8 +55,6 @@ https://github.com/user-attachments/assets/245bd896-74c6-43ae-9126-12d275c7b481
 <img src="./media/admin_update_book.JPG" alt="Admin Update Book Page"/>
 
 
-
-
 ## Techstack used
 - NextJS
 - Redux Toolkit
@@ -84,8 +84,6 @@ https://github.com/user-attachments/assets/245bd896-74c6-43ae-9126-12d275c7b481
   - Check out and return books
 
 
-
-
 ## Installation
 
 Prerequisites: Docker
@@ -97,7 +95,6 @@ Prerequisites: Docker
 5. Frontend will be running on `http://localhost:3000`
 6. Backend will be running on `http://localhost:8081`
 7. Database will be running on `http://localhost:5432`
-
 
 
 ## Usage
@@ -116,3 +113,33 @@ Prerequisites: Docker
 Copyright (c) 2024 [Y. Siva Sai Krishna](https://github.com/ysskrishna)
 
 This project is licensed under the AGPL-3.0 License - see the LICENSE file for details.
+
+## Built and maintained by
+
+Library Management System is built and maintained by:
+
+| | Name | GitHub | Role |
+|---|------|--------|------|
+| <img src="https://github.com/ysskrishna.png?size=120" width="60" height="60" alt="Y. Siva Sai Krishna"> | **Y. Siva Sai Krishna** | [@ysskrishna](https://github.com/ysskrishna) | Creator |
+
+## Support
+
+If you find this project helpful:
+
+- ⭐ Star the repository
+- 🐛 [Report issues](https://github.com/ysskrishna/libmate/issues)
+- 🔀 Submit pull requests
+- 💝 [Sponsor on GitHub](https://github.com/sponsors/ysskrishna)
+
+## License
+
+AGPL-3.0 © [Y. Siva Sai Krishna](https://github.com/ysskrishna) — see [LICENSE](LICENSE) for details.
+
+---
+
+<p align="left">
+  <a href="https://github.com/ysskrishna">Author's GitHub</a> •
+  <a href="https://linkedin.com/in/ysskrishna">Author's LinkedIn</a> •
+  <a href="https://ysskrishna.space">Author's site</a> •
+  <a href="https://github.com/ysskrishna/libmate/issues">Report Issues</a>
+</p>
